@@ -272,6 +272,7 @@ F-23 | review | advisory | REQ-023, REQ-034 | noted | evidence: near-duplicate k
 
 - 2026-11-20 — thesis+contract — 5ebb3f4
 - 2026-11-20 — gap answers — 968afef
+- 2026-11-20 — final — 5846dc8
 
 ## Appends
 
