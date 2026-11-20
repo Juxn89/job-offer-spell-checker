@@ -325,3 +325,9 @@ REQ-043 | ux_flow | T2 | Leaving or reloading the page while the box holds text 
 REQ-044 | functional | T1 | ano and anos, in any capitalisation, ANO and ANOS included as exceptions to the short all-capital rule, are always flagged, with año or años as the first suggestion. | fail-if: ano or anos, in any capitalisation, is not flagged, or año or años is not its first suggestion | serves: G1 — the most embarrassing missing-ñ error in a job offer is never reported as clean | authority: authoritative | source: A-047, A-051 | covers: DIM-lexical-norm | phase: pilot | feature: FEAT-01 | plain: ano and anos are always flagged, suggesting año or años first.
 REQ-045 | functional | T2 | Undo straight after a Replace, with the browser's own undo (Ctrl+Z or Cmd+Z, or the Edit menu), brings back exactly the text from before that Replace and, like any edit, clears every highlight and the count line. | fail-if: undo straight after a Replace gives any text other than the text from before that Replace, empties the box, or undoes the paste, or after the undo any highlight or the old count remains on screen | serves: G2 — a wrong correction can be taken back without losing the offer | authority: authoritative | source: A-049, A-053 | covers: DIM-correction-semantics | phase: pilot | feature: FEAT-02 | plain: Undo right after a Replace restores exactly the text from before it and clears the highlights.
 ```
+
+### 2026-11-20 (owner answer — the stage cut)
+
+```vid-prd-answers
+A-054 | human | 2026-11-20 | Q: how should the product be delivered — in which stages? | A: two stages, as recommended: stage 1 "Check an offer privately" (the check, every spelling rule, paste, the limits, the messages, accessibility and every privacy and hosting protection), stage 2 "Fix and copy the offer" (suggestions, Replace, Ignore, undo, the leave-page prompt, Copy text and its fallback); no technical stage 0 | settles: contract
+```
