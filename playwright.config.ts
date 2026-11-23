@@ -17,6 +17,10 @@ export default defineConfig({
   use: {
     baseURL: process.env.VID_PRODUCT_URL ?? 'http://product.test:8080',
     locale: 'es-ES',
+    // D-032: a click or fill whose element never appears fails in 15 s, a navigation in 30 s, so a
+    // red page case ends on its own message instead of waiting out the 600 s case limit per browser.
+    actionTimeout: 15_000,
+    navigationTimeout: 30_000,
   },
   projects: [
     { name: 'api', testMatch: /\.api\.spec\.ts$/ },
