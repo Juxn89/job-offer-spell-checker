@@ -1,0 +1,31 @@
+# Purpose: the labelled answers for `sh checks/census.sh --measure checks/selftest/fixtures/detectors` (v0.9.8 3.6, R11) —
+# each planted weak test as `weak <class> <subject> <rule>`, each near miss beside it as `good <class> <subject>`.
+# strength: ROW-901 (Tier-0, existence only), ROW-905 (Tier-0, named by no test); ROW-902 and the table rows are Value
+weak strength tests/invariants/strength.spec.ts:4 existence-only
+weak strength tests/invariants/strength.spec.ts unbound-row
+good strength tests/invariants/strength.spec.ts:11
+good strength tests/invariants/table.spec.ts:10
+# vacuity, the assertion lines
+weak vacuity tests/invariants/vacuity.spec.ts:8 or-constant
+weak vacuity tests/invariants/vacuity.spec.ts:12 literal-vs-literal
+weak vacuity tests/invariants/vacuity.spec.ts:16 catch-all
+good vacuity tests/invariants/vacuity.spec.ts:17
+weak vacuity tests/invariants/vacuity.spec.ts:22 status-span
+good vacuity tests/invariants/vacuity.spec.ts:23
+weak vacuity tests/invariants/vacuity.spec.ts:27 skip-on-condition
+weak vacuity tests/invariants/vacuity.spec.ts:29 skip-on-condition
+weak vacuity tests/invariants/vacuity.spec.ts:35 presence-static
+good vacuity tests/invariants/vacuity.spec.ts:36
+weak vacuity tests/invariants/vacuity.spec.ts:42 format-placeholder
+good vacuity tests/invariants/vacuity.spec.ts:43
+# vacuity, the populations
+weak vacuity tests/invariants/vacuity.spec.ts:48 substring-nothing
+good vacuity tests/invariants/vacuity.spec.ts:49
+weak vacuity tests/invariants/vacuity.spec.ts:54 zero-loop
+good vacuity tests/invariants/vacuity.spec.ts:57
+good vacuity tests/invariants/vacuity.spec.ts:58
+good vacuity tests/invariants/vacuity.spec.ts:59
+# vacuity, the fixtures
+weak vacuity tests/invariants/fixtures/offer-a.txt fixture-provenance
+good vacuity tests/invariants/fixtures/offer-b.txt
+weak vacuity tests/invariants/fixtures/offer-c.json fixture-provenance

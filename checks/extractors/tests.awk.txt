@@ -1,0 +1,35 @@
+# Purpose: the shared test-block reader of the strength and vacuity extractors — splits Playwright spec files into
+# their test() calls, the function grain (v0.9.2 3.9a). For each test it prints `B <file> <line> <rows>` (the ROW ids
+# its title, its describe titles or the comment just above it name; a title that is a template or a variable and
+# names no row binds the ROW ids in the file's code outside any test — its table, v0.9.8 R11), then
+# `L <file> <line> <text>` per line and `E <file> <line>`, tab-separated. A call ends where its parentheses close,
+# counted with strings, comments and escapes removed. Not a .sh file, so the census never runs it as a class;
+# named .txt because BASELINE.md allows no .awk extension (awk is the reader, run as awk -f).
+function strip(s,   o, i, c, n) { o = ""; n = length(s)
+  for (i = 1; i <= n; i++) { c = substr(s, i, 1)
+    if (q != "") { if (c == "\\") i++; else if (c == q) q = ""; continue }
+    if (c == "\\") { i++; continue }
+    if (c == "'" || c == "\"" || c == "`") { q = c; continue }
+    if (c == "/" && substr(s, i + 1, 1) == "/") break
+    o = o c }
+  if (q != "`") q = ""; return o }
+function ids(s,   r, o) { o = ""
+  while (match(s, /ROW[-_][0-9]+/)) { r = substr(s, RSTART, RLENGTH); sub(/_/, "-", r)
+    if (index(" " o " ", " " r " ") == 0) o = o (o == "" ? "" : " ") r; s = substr(s, RSTART + RLENGTH) }
+  return o }
+function opens(s) { return gsub(/\(/, "(", s) - gsub(/\)/, ")", s) }
+function emit(   i) { print "B\t" FILENAME "\t" bl "\t" rows; for (i = 1; i <= nb; i++) print "L\t" FILENAME "\t" (bl + i - 1) "\t" buf[i]; print "E\t" FILENAME "\t" FNR }
+FNR == 1 { d = 0; inb = 0; nd = 0; tbl = ""; doc = ""; q = "" }
+{ raw = $0; code = strip(raw)
+  if (!inb && raw ~ /(^|[^A-Za-z0-9_.$])test\.describe(\.(only|serial|parallel|skip|fixme))?[ \t]*\(/) { nd++; DD[nd] = d; DI[nd] = ids(raw) }
+  if (!inb && (raw ~ /(^|[^A-Za-z0-9_.$])test(\.(only|fail|slow))?[ \t]*\(/ || raw ~ /(^|[^A-Za-z0-9_.$])test\.(skip|fixme)[ \t]*\([ \t]*['"`]/)) {
+    inb = 1; sd = d; bl = FNR; nb = 0; ttl = ""; tdone = 0 }
+  if (inb) { buf[++nb] = raw; if (!tdone) { ttl = ttl " " raw; if (raw ~ /=>|function|async/) tdone = 1 } }
+  else if (raw ~ /^[ \t]*(\/\/|\/?\*)/) doc = doc " " raw
+  else if (raw !~ /^[ \t]*$/) { tbl = tbl " " ids(raw); doc = "" }
+  d += opens(code)
+  while (nd > 0 && !inb && d <= DD[nd]) nd--
+  if (inb && d <= sd) { rows = ids(ttl " " doc); for (k = 1; k <= nd; k++) rows = rows " " DI[k]
+    if (ids(ttl) == "" && match(ttl, /test(\.(only|fail|slow|skip|fixme))?[ \t]*\([ \t]*/)) { c1 = substr(ttl, RSTART + RLENGTH, 1)
+      if ((c1 == "`" && ttl ~ /`[^`]*\$\{/) || c1 ~ /[A-Za-z_$]/) rows = rows " " tbl }
+    rows = ids(rows); emit(); inb = 0; doc = "" } }
