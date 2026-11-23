@@ -1,0 +1,100 @@
+# Purpose: the ONLY way the ledger runs. `sh checks/test.sh` brings this up,
+# runs tests/invariants/, and tears it down. Tests physically cannot reach
+# anything real: never put real credentials in `environment`.
+#
+# One product image (v0.9.2 3.6, R21): the product is ONE service, built from
+# ONE context and ONE target (the Dockerfile's `product`), its page assets
+# built into the image; the tests service reaches it only over the network at
+# http://product.test:8080 — never a server bound in-process, never a second
+# product image or a fixture server; the README's preview command brings up
+# this same product service alone, from this file. checks/harness.sh reads
+# this file at every commit.
+#
+# Four harness rules, declared by `rules: 2` below:
+#  1. Nothing is installed or fetched when a service starts: the product's
+#     dependencies are in its image; the tests service builds its own image
+#     (the Dockerfile's `tests`: the Playwright image, browsers included, with
+#     the project's dependencies installed once).
+#  2. Each service is ready before whatever uses it: the product needs no
+#     other service to start; it declares a readiness check (/healthz answers
+#     200 once the dictionary is loaded) and the tests wait for it.
+#  3. No service loads a test-sized data set: the product loads the whole
+#     vendored dictionary, as in production.
+#  4. No one case runs longer than `case-limit:` seconds: Playwright's own
+#     per-test limit (--timeout, in milliseconds) is set from VID_CASE_LIMIT;
+#     a case past it is reported failed by its name and the run goes on.
+#     The 600 is a choice, not a measure, until the project's case times exist.
+#
+# The receipt: Playwright's JUnit reporter (--reporter=line,junit) writes the
+# per-case report to /vid-results/pending.xml (PLAYWRIGHT_JUNIT_OUTPUT_NAME);
+# checks/extractors/results.sh reads its shape. tests/ledger.sh turns the
+# runner's exit into the statuses below: 0 all passed, 1 some failed — both
+# ran to the end; 3 no report or nothing collected and 4 a runner failure with
+# no failing case are not, and publish nothing.
+#
+# Isolation (D-023): the product and the tests share one network, `ledger`,
+# which is internal — no route out of the harness for either. The README's
+# preview sets VID_LEDGER_INTERNAL=false, the one thing it changes, so the
+# owner's browser can reach the product's published port; the image, the
+# service and its settings are the ones the ledger certified.
+#
+# The operator door (D-024): the tests service reaches the Docker engine
+# through its socket, to read the product container's logs and files (the
+# rows that search them for an offer's text). It finds the product's
+# container by the compose labels it shares with its own container
+# (com.docker.compose.project, and service = VID_PRODUCT_SERVICE).
+#
+# No deployed shape yet (D-025): the product ships no process beside the web
+# process, and the proxy (Caddy) of deploy/ is not in this harness yet; the
+# rows that need it are owed to the step that builds deploy/.
+#
+# This whole file is law (checks/lawfiles `whole`): a change is a standalone
+# law commit.
+x-vid-harness:
+  product: product
+  rules: 2                                # the four rules above; checks/harness.sh holds the readiness and limit declarations
+  case-limit: 600                         # rule 4: the most seconds one case may run (a choice, not a measure)
+  forbidden: .inject( .listen( createServer( @revisor/server webServer 'fastify'   # a server bound in the tests process, or the product's server module imported into it
+  completed: [0, 1]                       # tests/ledger.sh: 0 all passed, 1 some failed
+services:
+  product:
+    build:
+      context: ${VID_TEST_CONTEXT:-.}
+      target: product
+    image: revisor-ofertas-product:ledger
+    environment:
+      VID_TEST: "1"
+      PORT: "8080"
+    command: ["node", "dist/server/main.js"]
+    ports:
+      - "8080:8080"                       # the preview's; unreachable while `ledger` is internal
+    networks:
+      ledger:
+        aliases: [product.test]           # its name on the ledger network: a reserved test domain (RFC 2606), never an outside host
+    healthcheck:                          # rule 2: ready once the dictionary is loaded
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:8080/healthz').then(r => process.exit(r.ok ? 0 : 1), () => process.exit(1))"]
+      interval: 2s
+      retries: 60
+  tests:
+    build:
+      context: ${VID_TEST_CONTEXT:-.}
+      target: tests
+    working_dir: /app
+    depends_on:
+      product:
+        condition: service_healthy
+    networks: [ledger]
+    volumes:
+      - ${VID_TEST_CONTEXT:-.}:/app:ro
+      - ./.vid/ledger-results:/vid-results
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      VID_TEST: "1"
+      VID_PRODUCT_URL: http://product.test:8080   # the harness client's base; the product by its network name
+      VID_PRODUCT_SERVICE: product           # the operator door finds the product's container by this service label
+      VID_CASE_LIMIT: ${VID_CASE_LIMIT:-600} # rule 4: checks/test.sh hands case-limit: here
+      PLAYWRIGHT_JUNIT_OUTPUT_NAME: /vid-results/pending.xml
+    command: sh -c 'sh tests/ledger.sh --reporter=line,junit --timeout=$${VID_CASE_LIMIT}000 ${VID_SELECTOR:-}'
+networks:
+  ledger:
+    internal: ${VID_LEDGER_INTERNAL:-true}
