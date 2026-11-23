@@ -1,0 +1,27 @@
+{
+  "name": "revisor-ortografico-ofertas",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Revisor ortográfico de ofertas: one page that checks a Spanish job offer's spelling on our own server.",
+  "type": "module",
+  "engines": {
+    "node": ">=22 <23"
+  },
+  "scripts": {
+    "build": "node esbuild.config.mjs",
+    "start": "node dist/server/main.js",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "fastify": "5.12.8",
+    "nspell": "2.1.5"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.14.0",
+    "@playwright/test": "1.65.0",
+    "@types/node": "22.20.5",
+    "esbuild": "0.28.2",
+    "typescript": "5.9.3",
+    "vitest": "5.1.0"
+  }
+}

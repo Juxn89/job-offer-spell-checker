@@ -6,7 +6,17 @@ The check runs on our own server against an open-source Spanish dictionary. The 
 
 The specification is in `PRD.md`. The stack and the rules that must never break are in `BASELINE.md`, the modules and hosting in `ARCHITECTURE.md`, and the choices made so far in `DECISIONS.md`.
 
-There is no code yet. How to run the page, how to test it (`sh checks/test.sh`) and the preview command arrive with the code skeleton, which `/vid develop` builds as its first step.
+## Preview
+
+With Docker running, from this folder:
+
+    VID_LEDGER_INTERNAL=false docker compose -f docker-compose.test.yml up --build product
+
+then open <http://localhost:8080>. This is the same product service, built from the same image, that the tests check; the one setting changed lets your browser reach it. Stop it with Ctrl+C.
+
+## Tests
+
+The tests run only inside Docker, through `sh checks/test.sh` (ViD runs them for you during `/vid develop`). They are in `tests/invariants/`, one file per rule the product must keep.
 
 ## Before you put this online
 

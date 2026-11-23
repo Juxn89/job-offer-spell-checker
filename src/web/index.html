@@ -1,0 +1,30 @@
+<!doctype html>
+<!-- Purpose: the checker page (`@revisor/web`), REQ-001 and REQ-019: the text box, Check spelling,
+     the count line, Copy text, the privacy notice and the footer. The build fills %STYLE% and
+     %SCRIPT% with the content-hashed asset names. Element identifiers follow D-021. -->
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Revisor ortográfico de ofertas</title>
+    <link rel="stylesheet" href="/assets/%STYLE%">
+  </head>
+  <body>
+    <main data-element="checker">
+      <h1>Revisor ortográfico de ofertas</h1>
+      <label for="offer">Texto de la oferta</label>
+      <textarea id="offer" data-element="offer" rows="16" lang="es"></textarea>
+      <p data-element="notice">El texto se revisa en nuestro servidor y no se guarda.</p>
+      <div>
+        <button type="button" data-element="check">Revisar ortografía</button>
+        <button type="button" data-element="copy">Copiar texto</button>
+      </div>
+      <p data-element="count" role="status"></p>
+      <p data-element="message" role="status"></p>
+    </main>
+    <footer data-element="footer">
+      <a data-element="privacy-link" href="/privacidad">Aviso de privacidad</a>
+    </footer>
+    <script src="/assets/%SCRIPT%"></script>
+  </body>
+</html>

@@ -1,0 +1,14 @@
+/* Purpose: the checker page's style sheet, served from our own server (REQ-020). Skeleton
+   placeholder: plain layout only (owner hint: plain, no design pass). */
+
+body {
+  font-family: system-ui, sans-serif;
+  margin: 0 auto;
+  max-width: 48rem;
+  padding: 1rem;
+}
+
+textarea {
+  box-sizing: border-box;
+  width: 100%;
+}
