@@ -1,14 +1,248 @@
-/* Purpose: the checker page's style sheet, served from our own server (REQ-020). Skeleton
-   placeholder: plain layout only (owner hint: plain, no design pass). */
+/* Purpose: the checker page's style sheet, served from our own server (REQ-020). Plain layout (owner
+   hint: plain, no design pass); the highlight layer is drawn over the box with the box's exact text
+   metrics so each highlight sits on its own word (REQ-001), and the page works at phone width (REQ-023). */
+
+:root {
+  --ink: #1d2733;
+  --muted: #5b6673;
+  --line: #c9d1da;
+  --accent: #1f5fbf;
+  --accent-ink: #ffffff;
+  --flag-bg: rgba(255, 186, 0, 0.32);
+  --flag-line: #c62828;
+  --menu-bg: #ffffff;
+  --ok: #1b6e3a;
+  --warn: #9a3412;
+  --page: #f6f8fa;
+}
+
+* {
+  box-sizing: border-box;
+}
 
 body {
-  font-family: system-ui, sans-serif;
+  background: var(--page);
+  color: var(--ink);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.5;
   margin: 0 auto;
-  max-width: 48rem;
+  max-width: 52rem;
   padding: 1rem;
 }
 
-textarea {
-  box-sizing: border-box;
+h1 {
+  font-size: 1.6rem;
+  margin: 0.5rem 0 0.25rem;
+}
+
+.intro {
+  color: var(--muted);
+  margin-top: 0;
+}
+
+label {
+  display: block;
+  font-weight: 600;
+  margin-top: 1rem;
+}
+
+.count {
+  font-weight: 600;
+  margin: 0.25rem 0 0.5rem;
+  min-height: 1.5em;
+}
+
+.count.clean {
+  color: var(--ok);
+}
+
+/* The box and its highlight layer share every text metric. */
+.editor {
+  position: relative;
+}
+
+.editor textarea,
+.editor .marks {
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 1rem;
+  letter-spacing: normal;
+  line-height: 1.6;
+  margin: 0;
+  overflow-wrap: break-word;
+  padding: 0.75rem;
+  tab-size: 4;
+  text-align: left;
+  white-space: pre-wrap;
   width: 100%;
+  word-break: normal;
+}
+
+.editor textarea {
+  background: #ffffff;
+  color: var(--ink);
+  display: block;
+  min-height: 16rem;
+  overflow: hidden;
+  resize: none;
+}
+
+.editor textarea:focus {
+  border-color: var(--accent);
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.editor .marks {
+  border-color: transparent;
+  color: transparent;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  position: absolute;
+}
+
+.editor .marks mark {
+  background: var(--flag-bg);
+  border-bottom: 2px solid var(--flag-line);
+  border-radius: 2px;
+  color: transparent;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.editor .marks mark:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+/* The suggestion menu (REQ-010, D-033). */
+.menu {
+  background: var(--menu-bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  max-width: calc(100vw - 2rem);
+  min-width: 11rem;
+  padding: 0.25rem;
+  position: absolute;
+  z-index: 10;
+}
+
+.menu button,
+.menu p {
+  background: none;
+  border: 0;
+  border-radius: 4px;
+  color: var(--ink);
+  display: block;
+  font: inherit;
+  margin: 0;
+  min-height: 2.5rem;
+  padding: 0.4rem 0.75rem;
+  text-align: left;
+  width: 100%;
+}
+
+.menu button {
+  cursor: pointer;
+}
+
+.menu button:hover,
+.menu button:focus {
+  background: #e8f0fb;
+  outline: none;
+}
+
+.menu [data-element="suggestion"] {
+  font-weight: 600;
+}
+
+.menu p {
+  color: var(--muted);
+  font-style: italic;
+}
+
+.menu hr {
+  border: 0;
+  border-top: 1px solid var(--line);
+  margin: 0.25rem 0;
+}
+
+.notice {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin: 0.4rem 0 0;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.actions button {
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--ink);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 600;
+  min-height: 2.75rem;
+  padding: 0.5rem 1.1rem;
+}
+
+.actions button.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+}
+
+.actions button:disabled {
+  cursor: progress;
+  opacity: 0.7;
+}
+
+.actions button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.message {
+  margin: 0.75rem 0 0;
+  min-height: 1.5em;
+}
+
+.message.warn {
+  color: var(--warn);
+}
+
+footer {
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin-top: 2rem;
+  padding-top: 0.75rem;
+}
+
+footer a,
+main a {
+  color: var(--accent);
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 0.75rem;
+  }
+
+  h1 {
+    font-size: 1.3rem;
+  }
+
+  .actions button {
+    flex: 1 1 auto;
+  }
 }

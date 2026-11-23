@@ -1,28 +1,35 @@
 <!doctype html>
-<!-- Purpose: the checker page (`@revisor/web`), REQ-001 and REQ-019: the text box, Check spelling,
-     the count line, Copy text and the footer. The privacy notice and the footer's link are the
-     step building REQ-019 and REQ-033 (they were taken out so their rows are seen red first). The build fills %STYLE% and
-     %SCRIPT% with the content-hashed asset names. Element identifiers follow D-021. -->
+<!-- Purpose: the checker page (`@revisor/web`), REQ-001, REQ-002, REQ-019 and REQ-033: the text box with
+     its highlight layer, Check spelling, the count line, Copy text, the messages, the notice under the box
+     and the footer's privacy link. The build fills %STYLE% and %SCRIPT% with the content-hashed asset
+     names. Element identifiers follow D-021, D-028 and D-033. -->
 <html lang="es">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Revisa la ortografía de una oferta de empleo en español.">
     <title>Revisor ortográfico de ofertas</title>
     <link rel="stylesheet" href="/assets/%STYLE%">
   </head>
   <body>
     <main data-element="checker">
       <h1>Revisor ortográfico de ofertas</h1>
+      <p class="intro">Pega el texto de tu oferta de empleo y pulsa <strong>Revisar ortografía</strong>. Las palabras con faltas se marcan en el texto: haz clic en una para ver sugerencias.</p>
       <label for="offer">Texto de la oferta</label>
-      <textarea id="offer" data-element="offer" rows="16" lang="es"></textarea>
-      <div>
-        <button type="button" data-element="check">Revisar ortografía</button>
+      <p class="count" data-element="count" role="status" aria-live="polite"></p>
+      <div class="editor">
+        <textarea id="offer" data-element="offer" lang="es" spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="sentences" placeholder="Pega aquí el texto de la oferta…"></textarea>
+        <div class="marks" id="marks"></div>
+      </div>
+      <p class="notice" data-element="notice">El texto se revisa en nuestro servidor y no se guarda.</p>
+      <div class="actions">
+        <button type="button" class="primary" data-element="check">Revisar ortografía</button>
         <button type="button" data-element="copy">Copiar texto</button>
       </div>
-      <p data-element="count" role="status"></p>
-      <p data-element="message" role="status"></p>
+      <p class="message" data-element="message" role="status" aria-live="polite"></p>
     </main>
     <footer data-element="footer">
+      <a data-element="privacy-link" href="/privacidad">Aviso de privacidad</a>
     </footer>
     <script src="/assets/%SCRIPT%"></script>
   </body>
