@@ -27,7 +27,7 @@ for (const file of ['es.aff.txt', 'es.dic.txt', 'LICENSE.txt']) {
 
 // The page: the client script and the style sheet, content-hashed so a new build is never served stale.
 const web = await build({
-  entryPoints: ['src/web/main.ts', 'src/web/styles.css'],
+  entryPoints: ['src/web/main.ts', 'src/web/prefs.ts', 'src/web/styles.css'],
   outdir: 'dist/web/assets',
   entryNames: '[name]-[hash]',
   bundle: true,
@@ -40,10 +40,11 @@ const web = await build({
 const names = {};
 for (const [out, meta] of Object.entries(web.metafile.outputs)) {
   if (meta.entryPoint?.endsWith('main.ts')) names.SCRIPT = basename(out);
+  if (meta.entryPoint?.endsWith('prefs.ts')) names.PREFS = basename(out);
   if (meta.entryPoint?.endsWith('styles.css')) names.STYLE = basename(out);
 }
-if (!names.SCRIPT || !names.STYLE) throw new Error('the page build wrote no script or no style sheet');
+if (!names.SCRIPT || !names.PREFS || !names.STYLE) throw new Error('the page build wrote no script or no style sheet');
 for (const page of ['index.html', 'privacidad.html']) {
-  const html = readFileSync(`src/web/${page}`, 'utf8').replace(/%(SCRIPT|STYLE)%/g, (_, key) => names[key]);
+  const html = readFileSync(`src/web/${page}`, 'utf8').replace(/%(SCRIPT|PREFS|STYLE)%/g, (_, key) => names[key]);
   writeFileSync(`dist/web/${page}`, html);
 }

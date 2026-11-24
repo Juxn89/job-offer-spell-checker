@@ -1,35 +1,46 @@
 <!doctype html>
 <!-- Purpose: the checker page (`@revisor/web`), REQ-001, REQ-002, REQ-019 and REQ-033: the text box with
      its highlight layer, Check spelling, the count line, Copy text, the messages, the notice under the box
-     and the footer's privacy link. The build fills %STYLE% and %SCRIPT% with the content-hashed asset
-     names. Element identifiers follow D-021, D-028 and D-033. -->
-<html lang="es">
+     and the footer's privacy link; the language selector and the theme switch at the top (REQ-046 to
+     REQ-049), each page text in English and Spanish (data-l, shown by the page language). The build fills
+     %PREFS%, %STYLE% and %SCRIPT% with the content-hashed asset names. Element identifiers follow D-021,
+     D-028 and D-033. -->
+<html lang="en" data-page="checker">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Revisa la ortografía de una oferta de empleo en español.">
-    <title>Revisor ortográfico de ofertas</title>
+    <meta name="description" content="Check the spelling of a Spanish job offer. Revisa la ortografía de una oferta de empleo en español.">
+    <meta name="color-scheme" content="light dark">
+    <title>Job offer spell checker</title>
     <link rel="stylesheet" href="/assets/%STYLE%">
+    <script src="/assets/%PREFS%"></script>
   </head>
   <body>
+    <header class="prefs" data-element="prefs">
+      <div class="langs" role="group" data-element="language" aria-label="Page language">
+        <button type="button" data-set-lang="en" lang="en" aria-pressed="true">English</button>
+        <button type="button" data-set-lang="es" lang="es" aria-pressed="false">Español</button>
+      </div>
+      <button type="button" class="theme" data-element="theme" aria-pressed="false"><span data-l="en">Dark theme</span><span data-l="es">Tema oscuro</span></button>
+    </header>
     <main data-element="checker">
-      <h1>Revisor ortográfico de ofertas</h1>
-      <p class="intro">Pega el texto de tu oferta de empleo y pulsa <strong>Revisar ortografía</strong>. Las palabras con faltas se marcan en el texto: haz clic en una para ver sugerencias.</p>
-      <label for="offer">Texto de la oferta</label>
+      <h1><span data-l="en">Job offer spell checker</span><span data-l="es">Revisor ortográfico de ofertas</span></h1>
+      <p class="intro"><span data-l="en">Paste the text of your job offer, written in Spanish, and press <strong>Check spelling</strong>. Misspelled words are marked in the text: click one to see suggestions.</span><span data-l="es">Pega el texto de tu oferta de empleo y pulsa <strong>Revisar ortografía</strong>. Las palabras con faltas se marcan en el texto: haz clic en una para ver sugerencias.</span></p>
+      <label for="offer"><span data-l="en">Offer text (Spanish)</span><span data-l="es">Texto de la oferta</span></label>
       <p class="count" data-element="count" role="status" aria-live="polite"></p>
       <div class="editor">
-        <textarea id="offer" data-element="offer" lang="es" spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="sentences" placeholder="Pega aquí el texto de la oferta…"></textarea>
-        <div class="marks" id="marks"></div>
+        <textarea id="offer" data-element="offer" lang="es" translate="no" class="notranslate" spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="sentences" placeholder="Paste the offer text here…" data-placeholder-en="Paste the offer text here…" data-placeholder-es="Pega aquí el texto de la oferta…"></textarea>
+        <div class="marks" id="marks" lang="es" translate="no"></div>
       </div>
-      <p class="notice" data-element="notice">El texto se revisa en nuestro servidor y no se guarda.</p>
+      <p class="notice" data-element="notice"><span data-l="en">The text is checked on our server and is not saved.</span><span data-l="es">El texto se revisa en nuestro servidor y no se guarda.</span></p>
       <div class="actions">
-        <button type="button" class="primary" data-element="check">Revisar ortografía</button>
-        <button type="button" data-element="copy">Copiar texto</button>
+        <button type="button" class="primary" data-element="check"><span data-l="en">Check spelling</span><span data-l="es">Revisar ortografía</span></button>
+        <button type="button" data-element="copy"><span data-l="en">Copy text</span><span data-l="es">Copiar texto</span></button>
       </div>
       <p class="message" data-element="message" role="status" aria-live="polite"></p>
     </main>
     <footer data-element="footer">
-      <a data-element="privacy-link" href="/privacidad">Aviso de privacidad</a>
+      <a data-element="privacy-link" href="/privacidad"><span data-l="en">Privacy notice</span><span data-l="es">Aviso de privacidad</span></a>
     </footer>
     <script src="/assets/%SCRIPT%"></script>
   </body>

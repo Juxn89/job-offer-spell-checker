@@ -1,25 +1,53 @@
 <!doctype html>
 <!-- Purpose: the privacy note page (REQ-033), linked from the checker page's footer: what is processed,
-     for how long, and that nothing is kept (GDPR basics, A-029). -->
-<html lang="es">
+     for how long, and that nothing is kept (GDPR basics, A-029); in English and Spanish with the same
+     language selector and theme switch as the checker page, and the two remembered choices (REQ-049). -->
+<html lang="en" data-page="privacy">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Aviso de privacidad — Revisor ortográfico de ofertas</title>
+    <meta name="color-scheme" content="light dark">
+    <title>Privacy notice — Job offer spell checker</title>
     <link rel="stylesheet" href="/assets/%STYLE%">
+    <script src="/assets/%PREFS%"></script>
   </head>
   <body>
+    <header class="prefs" data-element="prefs">
+      <div class="langs" role="group" data-element="language" aria-label="Page language">
+        <button type="button" data-set-lang="en" lang="en" aria-pressed="true">English</button>
+        <button type="button" data-set-lang="es" lang="es" aria-pressed="false">Español</button>
+      </div>
+      <button type="button" class="theme" data-element="theme" aria-pressed="false"><span data-l="en">Dark theme</span><span data-l="es">Tema oscuro</span></button>
+    </header>
     <main data-element="privacy-note">
-      <h1>Aviso de privacidad</h1>
-      <h2>El texto de tu oferta</h2>
-      <p>Cuando pulsas «Revisar ortografía», el texto se envía a nuestro propio servidor, se revisa en memoria y se descarta en cuanto recibes el resultado. No se guarda en archivos, registros, bases de datos ni en tu navegador, y no se envía a ninguna otra empresa ni servicio.</p>
-      <h2>Tu dirección IP</h2>
-      <p>Para limitar el uso a 30 revisiones por minuto, el servidor recuerda tu dirección IP en memoria durante un minuto y después la olvida. Ningún registro guarda tu dirección IP completa.</p>
-      <h2>Cookies y seguimiento</h2>
-      <p>Esta página no usa cookies, analítica ni herramientas de seguimiento, y no carga nada de otros sitios web.</p>
-      <h2>Base legal y tus derechos</h2>
-      <p>Tratamos estos datos solo para prestarte el servicio que pides (interés legítimo), y no conservamos nada que permita identificarte. Como no guardamos tu texto ni tu dirección, no hay datos tuyos que consultar, corregir o borrar.</p>
-      <p><a data-element="back" href="/">Volver al revisor</a></p>
+      <div data-l="en">
+        <h1>Privacy notice</h1>
+        <h2>The text of your offer</h2>
+        <p>When you press “Check spelling”, the text is sent to our own server, checked in memory and discarded as soon as you receive the result. It is not saved in files, logs, databases or your browser, and it is not sent to any other company or service.</p>
+        <h2>Your IP address</h2>
+        <p>To limit use to 30 checks a minute, the server keeps your IP address in memory for one minute and then forgets it. No log keeps your full IP address.</p>
+        <h2>Your language and theme</h2>
+        <p>If you choose a page language or a light or dark theme, that choice is kept only in this browser’s storage, so the next visit opens the same way. Nothing is kept until you choose, it is never sent to our server or anyone else, and you can remove it by clearing this site’s data in your browser.</p>
+        <h2>Cookies and tracking</h2>
+        <p>This page uses no cookies, analytics or tracking tools, and loads nothing from other websites.</p>
+        <h2>Legal basis and your rights</h2>
+        <p>We process this data only to provide the service you ask for (legitimate interest), and we keep nothing that could identify you. Since we keep neither your text nor your address, there is no data of yours to access, correct or delete.</p>
+        <p><a data-element="back" href="/">Back to the checker</a></p>
+      </div>
+      <div data-l="es">
+        <h1>Aviso de privacidad</h1>
+        <h2>El texto de tu oferta</h2>
+        <p>Cuando pulsas «Revisar ortografía», el texto se envía a nuestro propio servidor, se revisa en memoria y se descarta en cuanto recibes el resultado. No se guarda en archivos, registros, bases de datos ni en tu navegador, y no se envía a ninguna otra empresa ni servicio.</p>
+        <h2>Tu dirección IP</h2>
+        <p>Para limitar el uso a 30 revisiones por minuto, el servidor recuerda tu dirección IP en memoria durante un minuto y después la olvida. Ningún registro guarda tu dirección IP completa.</p>
+        <h2>Tu idioma y tu tema</h2>
+        <p>Si eliges un idioma para la página o un tema claro u oscuro, esa elección se guarda solo en el almacenamiento de este navegador, para que la próxima visita se abra igual. No se guarda nada hasta que eliges, nunca se envía a nuestro servidor ni a nadie más, y puedes borrarla eliminando los datos de este sitio en tu navegador.</p>
+        <h2>Cookies y seguimiento</h2>
+        <p>Esta página no usa cookies, analítica ni herramientas de seguimiento, y no carga nada de otros sitios web.</p>
+        <h2>Base legal y tus derechos</h2>
+        <p>Tratamos estos datos solo para prestarte el servicio que pides (interés legítimo), y no conservamos nada que permita identificarte. Como no guardamos tu texto ni tu dirección, no hay datos tuyos que consultar, corregir o borrar.</p>
+        <p><a data-element="back" href="/">Volver al revisor</a></p>
+      </div>
     </main>
   </body>
 </html>

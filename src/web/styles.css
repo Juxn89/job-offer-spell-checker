@@ -1,6 +1,7 @@
 /* Purpose: the checker page's style sheet, served from our own server (REQ-020). Plain layout (owner
    hint: plain, no design pass); the highlight layer is drawn over the box with the box's exact text
-   metrics so each highlight sits on its own word (REQ-001), and the page works at phone width (REQ-023). */
+   metrics so each highlight sits on its own word (REQ-001), and the page works at phone width (REQ-023).
+   Light and dark themes through the same tokens (REQ-048): the device's setting unless one is chosen. */
 
 :root {
   --ink: #1d2733;
@@ -14,6 +15,103 @@
   --ok: #1b6e3a;
   --warn: #9a3412;
   --page: #f6f8fa;
+  --surface: #ffffff;
+  --hover: #e8f0fb;
+  --shadow: rgba(0, 0, 0, 0.15);
+  color-scheme: light;
+}
+
+/* The dark theme: the device's setting with nothing chosen, or chosen with the switch (REQ-048). */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ink: #e6edf3;
+    --muted: #a3afbd;
+    --line: #3d4a59;
+    --accent: #7cb0ff;
+    --accent-ink: #0d1117;
+    --flag-bg: rgba(255, 186, 0, 0.28);
+    --flag-line: #ff7b72;
+    --menu-bg: #1c2430;
+    --ok: #6fdc8c;
+    --warn: #ffab70;
+    --page: #0d1117;
+    --surface: #161b22;
+    --hover: #24344d;
+    --shadow: rgba(0, 0, 0, 0.6);
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --ink: #e6edf3;
+  --muted: #a3afbd;
+  --line: #3d4a59;
+  --accent: #7cb0ff;
+  --accent-ink: #0d1117;
+  --flag-bg: rgba(255, 186, 0, 0.28);
+  --flag-line: #ff7b72;
+  --menu-bg: #1c2430;
+  --ok: #6fdc8c;
+  --warn: #ffab70;
+  --page: #0d1117;
+  --surface: #161b22;
+  --hover: #24344d;
+  --shadow: rgba(0, 0, 0, 0.6);
+  color-scheme: dark;
+}
+
+/* Each page text is written in both languages; only the page language's shows (REQ-046). */
+html[lang="en"] [data-l="es"],
+html[lang="es"] [data-l="en"] {
+  display: none;
+}
+
+/* The language selector and the theme switch, at the top of both pages (REQ-046, REQ-048). */
+.prefs {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+.langs {
+  display: inline-flex;
+}
+
+.prefs button {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.9rem;
+  min-height: 2.5rem;
+  padding: 0.3rem 0.8rem;
+}
+
+.langs button:first-child {
+  border-radius: 6px 0 0 6px;
+}
+
+.langs button:last-child {
+  border-left: 0;
+  border-radius: 0 6px 6px 0;
+}
+
+.prefs .theme {
+  border-radius: 6px;
+}
+
+.prefs button[aria-pressed="true"] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+}
+
+.prefs button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 * {
@@ -80,7 +178,7 @@ label {
 }
 
 .editor textarea {
-  background: #ffffff;
+  background: var(--surface);
   color: var(--ink);
   display: block;
   min-height: 16rem;
@@ -122,7 +220,7 @@ label {
   background: var(--menu-bg);
   border: 1px solid var(--line);
   border-radius: 8px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 6px 20px var(--shadow);
   max-width: calc(100vw - 2rem);
   min-width: 11rem;
   padding: 0.25rem;
@@ -151,7 +249,7 @@ label {
 
 .menu button:hover,
 .menu button:focus {
-  background: #e8f0fb;
+  background: var(--hover);
   outline: none;
 }
 
@@ -184,7 +282,7 @@ label {
 }
 
 .actions button {
-  background: #ffffff;
+  background: var(--surface);
   border: 1px solid var(--line);
   border-radius: 6px;
   color: var(--ink);
