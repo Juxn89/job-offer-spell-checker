@@ -15,7 +15,7 @@
 
 ```vid-stages
 STAGE-1 | Check an offer privately | features: FEAT-01 FEAT-04 FEAT-02 FEAT-03
-STAGE-2 | Fix and copy the offer | features: -
+STAGE-2 | Fix and copy the offer | features: FEAT-05 FEAT-06
 split: REQ-010 REQ-011 REQ-012 REQ-043 REQ-045 REQ-015 REQ-016 INV-001 -> STAGE-2
 row: ROW-026 -> STAGE-2
 row: ROW-028 -> STAGE-2
